@@ -17,10 +17,10 @@ fEMR is a fast EMR solution for remote clinics who depend on speed and ease of u
 
 ### Installation and Deployment
 
-For detailed instructions regarding installation and deployment, please follow the directions in the following link. 
+For detailed instructions regarding installation and deployment, please follow the directions in the following link.   
 * [Installation Instructions](https://docs.google.com/document/d/1CLDNAvnc_doWw2OGKpXw11MguEUsex2o14ifo-qf5jA/edit?usp=sharing)
 
-Prerequisites: Have MySQL, MySQLWorkbench, and IntelliJ IDEA Ultimate installed on a local machine.
+Prerequisites: Have MySQL, MySQLWorkbench, and IntelliJ IDEA Ultimate installed on a local machine.  
 #### 1. Download Scala and Play Framework plugins.
 #### 2. Make a new file in the conf folder named application.dev.conf containing database information (see link for more details).
 #### 3. Create a new schema "femr_db" in SQL Workbench.
