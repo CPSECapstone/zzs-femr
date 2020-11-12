@@ -37,7 +37,7 @@
 
 body {
     padding-top: 50px;
-    background-color: #EEEEEE;
+    background-color: #d2c9ba;
     /* Removed because of the insane amount of time required to load (especially on networks where the connection speed is iffy */
     /*font-family: dejavu;*/
     font-family: sans-serif;
@@ -333,7 +333,7 @@ float: right;
 /* fEMR's background with border */
 .backgroundForWrap {
     border-radius: 10px;
-    background-color: #EEEEEE;
+    background-color: #e9e6e6;
     border: 3px solid #3f3f3d;
 }
 
