@@ -15,6 +15,9 @@ fEMR is a fast EMR solution for remote clinics who depend on speed and ease of u
 
 * [Play Framework](http://www.playframework.com/)
 
+### CI
+This repo uses Github Actions workflows for continuous integration, which can be found under the Actions tab in Github (https://github.com/CPSECapstone/zzs-femr/actions?query=workflow%3A%22Scala+CI%22). The Scala CI workflow runs 'sbt test' whenever code is pushed or a pull request is made to the main branch.
+
 ### Installation and Deployment
 
 For detailed instructions regarding installation and deployment, please follow the directions in the following link.   
