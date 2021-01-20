@@ -21,8 +21,6 @@
     font-size: 12px;
 }
 
-
-
 .sectionBackground {
     min-height: 638px;
     padding: 5px;
@@ -32,12 +30,6 @@
     float: left;
     width: 40%;
     padding: 5px;
-    display: block;
-}
-
-.genInfoWrap label {
-    margin-top: 3px;
-    display: block;
 }
 
 #vitalsWrap {
@@ -135,7 +127,6 @@
 .generalInfoInput {
     padding: 5px;
     overflow: hidden;
-    display: block;
 }
 
 .triage-form .error-message{
@@ -166,6 +157,7 @@
 }
 
 .generalInfoInput input[type="text"], input[type="tel"], .generalInfoInput input[type="date"] {
+    float: right;
     margin-right: 120px;
     width: 180px;
 }
@@ -197,7 +189,7 @@
     font-size: 10px;
 }
 
-  .submitResetWrap {
+.submitResetWrap {
     margin-top: 15px;
     margin-bottom: 5px;
     overflow: hidden;
@@ -219,6 +211,7 @@
 
 /* General info stuff */
 #genderBtns {
+    float: right;
     margin-right: 120px;
     width: 175px;
 }
@@ -295,9 +288,7 @@
 
     #ageClassificationWrap{
         margin-top: 40px;
-        display: block;
     }
-
 }
 
 @media (max-width: 620px) {
@@ -342,13 +333,12 @@
     }
     #genInfoWrap input {
         float: none;
-        display: inline-block;
     }
     #vitalsWrap h2{
         text-align: center;
     }
     .fInput {
-        display: inline-block;
+
         width: 100%;
     }
 
@@ -387,7 +377,7 @@
 }
 
 #citySearchContainer .twitter-typeahead {
-   display: inline !important;
+    display: inline !important;
     width: 100%;
 }
 .tt-dropdown-menu{

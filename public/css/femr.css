@@ -37,7 +37,7 @@
 
 body {
     padding-top: 50px;
-    background-color: #d2c9ba;
+    background-color: #aaa296;
     /* Removed because of the insane amount of time required to load (especially on networks where the connection speed is iffy */
     /*font-family: dejavu;*/
     font-family: sans-serif;
@@ -193,7 +193,7 @@ a.fRedButton:hover{
 /* THE fEMR textarea */
 .fTextArea {
     width: 100%;
-    height: 170px;
+    height: 103px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
