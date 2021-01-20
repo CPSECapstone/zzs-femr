@@ -66,6 +66,11 @@ public class Patient implements IPatient {
     }
 
     @Override
+    public void setPatientKey(){
+        this.patientKey = new PatientKey(1, 1);
+    }
+
+    @Override
     public int getUserId() {
         return userId;
     }

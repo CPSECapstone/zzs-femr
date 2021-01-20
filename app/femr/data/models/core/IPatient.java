@@ -28,6 +28,8 @@ public interface IPatient {
 
     int getId();
 
+    void setPatientKey();
+
     int getUserId();
 
     void setUserId(int userId);
