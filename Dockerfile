@@ -14,6 +14,11 @@ RUN sudo apt-get install -y curl
 ENV SBT_VERSION 1.1.5
 ENV PROJECT_HOME /usr/src
 
+#database variables
+ENV DB_URL "jdbc:mysql://localhost:3306/femr_db?characterEncoding=UTF-8&useSSL=false"
+ENV DB_USER "username"
+ENV DB_PASS "password"
+
 RUN mkdir -p $PROJECT_HOME/activator $PROJECT_HOME/app
 
 WORKDIR $PROJECT_WORKPLACE/activator
@@ -41,4 +46,4 @@ COPY . $PROJECT_HOME/app
 WORKDIR $PROJECT_HOME/app
 EXPOSE 9000
 
-ENTRYPOINT sbt ~run
+ENTRYPOINT url=$DB_URL usr=$DB_USER pass=$DB_PASS sbt ~run
