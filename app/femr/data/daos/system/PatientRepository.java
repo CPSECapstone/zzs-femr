@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientRepository implements IPatientRepository {
 
@@ -349,16 +350,36 @@ public class PatientRepository implements IPatientRepository {
     @Override
     public IPatient savePatient(IPatient patient) {
 
-        IPatient response = null;
-        try {
+        Optional<Patient> maxIdPatient;
+        Boolean savedSafely = false;
+        while (!(savedSafely)) {
+            try {
+                maxIdPatient = QueryProvider.getPatientQuery()
+                        .where().eq("kit_id", patient.getPatientKey().getKitId())
+                        .orderBy("id DESC")
+                        .setMaxRows(1)
+                        .findOneOrEmpty();
 
-            Ebean.save(patient);
-        } catch (Exception ex) {
+                if (maxIdPatient.isPresent()) {
+                    patient.setId(maxIdPatient.get().getId() + 1);
+                } else {
+                    patient.setId(1);
+                }
+                Ebean.save(patient);
+                savedSafely = true;
+            } catch (io.ebean.DuplicateKeyException ex) {
+                // id must have just been taken, try again
+                System.out.println("duplicate key exception, try to get a valid id again");
+            }
+            catch (Exception ex) {
 
-            //is it necessary to pass all details about object in log?
-            Logger.error("PatientRepository-savePatient", ex.getMessage());
-            throw ex;
+                //is it necessary to pass all details about object in log?
+                Logger.error("PatientRepository-savePatient", ex.getMessage());
+                throw ex;
+            }
         }
+
+        //io.ebean.DuplicateKeyException
 
         return patient;
     }

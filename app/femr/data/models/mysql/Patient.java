@@ -67,7 +67,13 @@ public class Patient implements IPatient {
 
     @Override
     public void setPatientKey(){
-        this.patientKey = new PatientKey(1, 1);
+        this.patientKey = new PatientKey(0, 1);
+    }
+
+    @Override
+    public PatientKey getPatientKey()
+    {
+        return this.patientKey;
     }
 
     @Override

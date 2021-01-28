@@ -9,7 +9,7 @@ CREATE  TABLE `patient_encounters` (
   `chief_complaint` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `ID_UNIQUE` (`id` ASC) ,
-  INDEX `patient_id_idx` (`patient_id` ASC, `kit_id` ASC) ,
+  INDEX `patient_id_idx` (`patient_id` ASC, `kit_id`) ,
   INDEX `user_id_idx` (`user_id` ASC) ,
   CONSTRAINT `fk_patient_encounter_patient_id_patients_id`
   FOREIGN KEY (`patient_id`, `kit_id`)
