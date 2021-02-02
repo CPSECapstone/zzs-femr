@@ -569,6 +569,59 @@ public class SearchService implements ISearchService {
         return response;
     }
 
+    //new search
+    public ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last) {
+        ServiceResponse<List<PatientItem>> response = new ServiceResponse<>();
+
+        String firstName = first;
+        String lastName = last;
+        if (first.length() == 0 || last.length() == 0) {
+            response.addError("", "query strings empty");
+        }
+
+        List<? extends IPatient> patients;
+
+        try {
+        patients = patientRepository.retrievePatientsByName(firstName, lastName);
+
+            List<PatientItem> patientItems = new ArrayList<>();
+            for (IPatient patient : patients) {
+                String pathToPhoto = null;
+                Integer photoId = null;
+                if (patient.getPhoto() != null) {
+                    pathToPhoto = patient.getPhoto().getFilePath();
+                    photoId = patient.getPhoto().getId();
+                }
+                patientItems.add(itemModelMapper.createPatientItem(
+                        patient.getId(),
+                        patient.getFirstName(),
+                        patient.getLastName(),
+                        patient.getPhoneNumber(),
+                        patient.getCity(),
+                        patient.getAddress(),
+                        patient.getUserId(),
+                        patient.getAge(),
+                        patient.getSex(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        pathToPhoto,
+                        photoId,
+                        null,
+                        null,
+                        null,
+                        null
+                ));
+            }
+            response.setResponseObject(patientItems);
+        } catch (Exception ex) {
+            response.addError("", ex.getMessage());
+        }
+
+        return response;
+    }
+
     /**
      * {@inheritDoc}
      */

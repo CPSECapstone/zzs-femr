@@ -108,6 +108,10 @@ public interface ISearchService {
      */
     ServiceResponse<List<PatientItem>> retrievePatientsFromQueryString(String patientSearchQuery);
 
+    //new search
+    ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last);
+
+
     /**
      * Get all current system setting values, only works for one right now.
      * Will need to be expanded later

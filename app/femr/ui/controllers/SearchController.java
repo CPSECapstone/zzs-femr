@@ -105,6 +105,15 @@ public class SearchController extends Controller {
         return ok("true");
     }
 
+    //new search
+    public Result doesPatientExistForSearch(String first, String last){
+        ServiceResponse<List<PatientItem>> patientResponse = searchService.retrievePatientsFromTriageSearch(first, last);
+        if (patientResponse.hasErrors() || patientResponse.getResponseObject().size() == 0) {
+            return ok("false");
+        }
+        return ok("true");
+    }
+
     public Result typeaheadPatientsJSONGet(){
 
         CurrentUser currentUser = sessionService.retrieveCurrentUserSession();

@@ -657,7 +657,8 @@ $(document).ready(function () {
                 $(diabetesDialog).removeClass('hidden');
                 diabeticScreeningFeature.readonlyEverything();
             } else {
-                checkIfDuplicatePatient();
+                //checkIfDuplicatePatient();
+                checkIfDuplicatePatientMatch();
             }
             pass = !isDiabeticScreeningPromptNecessary;
         }
@@ -672,10 +673,29 @@ $(document).ready(function () {
         checkIfDuplicatePatient();
     });
 
-    function checkIfDuplicatePatient() {
+    // function checkIfDuplicatePatient() {
+    //     var patientInfo = triageFields.patientInformation;
+    //     var query = patientInfo.firstName.val() + " " + patientInfo.lastName.val();
+    //     var url = "/search/check/" + query;
+    //     var patientId = $("#patientId").val();
+    //
+    //     $.getJSON(url, function (result) {
+    //         if (result === true) {
+    //             if(!(patientId > 0)) {
+    //                 if (confirm("A patient with this name already exists in the database. Would you like to view the matching patient information?")) {
+    //                     var duplicatePatientUrl = "/history/patient/" + patientInfo.firstName.val() + "-" + patientInfo.lastName.val();
+    //                     window.location.replace(duplicatePatientUrl);
+    //                 }
+    //             }
+    //         }
+    //     })
+    // };
+
+    function checkIfDuplicatePatientMatch() {
         var patientInfo = triageFields.patientInformation;
-        var query = patientInfo.firstName.val() + " " + patientInfo.lastName.val();
-        var url = "/search/check/" + query;
+        var first = patientInfo.firstName.val();
+        var last = patientInfo.lastName.val();
+        var url = "/search/findMatch/" + first + "/" + last;
         var patientId = $("#patientId").val();
 
         $.getJSON(url, function (result) {

@@ -189,7 +189,7 @@
     font-size: 10px;
 }
 
-.submitResetWrap {
+  .submitResetWrap {
     margin-top: 15px;
     margin-bottom: 5px;
     overflow: hidden;
@@ -211,7 +211,6 @@
 
 /* General info stuff */
 #genderBtns {
-    float: right;
     margin-right: 120px;
     width: 175px;
 }
