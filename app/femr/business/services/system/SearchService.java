@@ -105,6 +105,8 @@ public class SearchService implements ISearchService {
             Integer smoker = null;
             Integer diabetic = null;
             Integer alcohol = null;
+            Integer cholesterol = null;
+            Integer hypertension = null;
             String ageClassification = null;
             if (patientEncounters.size() > 0){
 
@@ -116,6 +118,8 @@ public class SearchService implements ISearchService {
                 smoker = QueryHelper.findPatientSmoker(patientEncounterVitalRepository, recentEncounter.getId());
                 diabetic = QueryHelper.findPatientDiabetic(patientEncounterVitalRepository, recentEncounter.getId());
                 alcohol = QueryHelper.findPatientAlcohol(patientEncounterVitalRepository, recentEncounter.getId());
+                cholesterol = QueryHelper.findPatientCholesterol(patientEncounterVitalRepository, recentEncounter.getId());
+                hypertension = QueryHelper.findPatientHypertension(patientEncounterVitalRepository, recentEncounter.getId());
 
                 if (recentEncounter.getPatientAgeClassification() != null){
                     ageClassification = recentEncounter.getPatientAgeClassification().getName();
@@ -151,7 +155,9 @@ public class SearchService implements ISearchService {
                     ageClassification,
                     smoker,
                     diabetic,
-                    alcohol
+                    alcohol,
+                    cholesterol,
+                    hypertension
 
             );
 
@@ -198,6 +204,8 @@ public class SearchService implements ISearchService {
             Integer smoker = QueryHelper.findPatientSmoker(patientEncounterVitalRepository, patientEncounter.getId());
             Integer diabetic = QueryHelper.findPatientDiabetic(patientEncounterVitalRepository, patientEncounter.getId());
             Integer alcohol = QueryHelper.findPatientAlcohol(patientEncounterVitalRepository, patientEncounter.getId());
+            Integer cholesterol = QueryHelper.findPatientCholesterol(patientEncounterVitalRepository, patientEncounter.getId());
+            Integer hypertension = QueryHelper.findPatientHypertension(patientEncounterVitalRepository, patientEncounter.getId());
 
             String ageClassification = null;
             if (patientEncounter.getPatientAgeClassification() != null){
@@ -229,7 +237,9 @@ public class SearchService implements ISearchService {
                     ageClassification,
                     smoker,
                     diabetic,
-                    alcohol
+                    alcohol,
+                    cholesterol,
+                    hypertension
             );
 
             // If metric setting enabled convert response patientItem to metric
@@ -558,6 +568,8 @@ public class SearchService implements ISearchService {
                         null,
                         null,
                         null,
+                        null,
+                        null,
                         null
                 ));
             }
@@ -608,6 +620,8 @@ public class SearchService implements ISearchService {
                         null,
                         pathToPhoto,
                         photoId,
+                        null,
+                        null,
                         null,
                         null,
                         null,
@@ -718,6 +732,8 @@ public class SearchService implements ISearchService {
                         null,
                         pathToPhoto,
                         photoId,
+                        null,
+                        null,
                         null,
                         null,
                         null,
