@@ -45,9 +45,13 @@
               <h2>General Info</h2>
 
                 @inputText("First Name", "firstName", true, if(viewModel != null) viewModel.getPatient.getFirstName else null, "text")
+                <br>
                 @inputText("Last Name", "lastName", true, if(viewModel != null) viewModel.getPatient.getLastName else null, "text")
+                <br>
                 @inputText("Phone Number", "phoneNumber", false, if(viewModel != null) viewModel.getPatient.getPhoneNumber else null, "tel")
+                <br>
                 @inputText("Address", "address", false, if(viewModel != null) viewModel.getPatient.getAddress else null, "text")
+                <br>
                 <div class="generalInfoInput" id="citySearchContainer">
                     <label for="city">City<span class="red bold">*</span></label>
                     @if(viewModel.getPatient.getCity == null) {
@@ -56,6 +60,7 @@
                         <input type = "text" class = "citySearch fInput" name="city" id="city" value="@viewModel.getPatient.getCity"readonly>
                         }
                 </div>
+                <br>
 
                 <div id="ageClassificationWrap">
                     <label>Age<span class="red bold">*</span></label>
@@ -75,7 +80,9 @@
                     </div>
                 </div>
 
+                <br>
                 @inputGender(viewModel)
+                <br>
 
 
                 <div class="generalInfoInput">
