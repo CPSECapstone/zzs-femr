@@ -306,6 +306,7 @@ var diabeticScreeningFeature = {
         //because they are stupid
         triageFields.patientInformation.firstName.prop('readonly', true);
         triageFields.patientInformation.lastName.prop('readonly', true);
+        triageFields.patientInformation.address.prop('readonly', true);
         triageFields.patientInformation.phoneNumber.prop('readonly', true);
         triageFields.patientInformation.age.prop('readonly', true);
         triageFields.patientInformation.years.prop('readonly', true);
@@ -386,6 +387,7 @@ var triageFields = {
     patientInformation: {
         firstName: $('#firstName'),
         lastName: $('#lastName'),
+        address: $('#address'),
         phoneNumber: $('#phoneNumber'),
         age: $('#age'),//doesn't work for an existing patient
         years: $('#years'),
@@ -673,35 +675,23 @@ $(document).ready(function () {
         checkIfDuplicatePatient();
     });
 
-    // function checkIfDuplicatePatient() {
-    //     var patientInfo = triageFields.patientInformation;
-    //     var query = patientInfo.firstName.val() + " " + patientInfo.lastName.val();
-    //     var url = "/search/check/" + query;
-    //     var patientId = $("#patientId").val();
-    //
-    //     $.getJSON(url, function (result) {
-    //         if (result === true) {
-    //             if(!(patientId > 0)) {
-    //                 if (confirm("A patient with this name already exists in the database. Would you like to view the matching patient information?")) {
-    //                     var duplicatePatientUrl = "/history/patient/" + patientInfo.firstName.val() + "-" + patientInfo.lastName.val();
-    //                     window.location.replace(duplicatePatientUrl);
-    //                 }
-    //             }
-    //         }
-    //     })
-    // };
-
     function checkIfDuplicatePatientMatch() {
         var patientInfo = triageFields.patientInformation;
         var first = patientInfo.firstName.val();
         var last = patientInfo.lastName.val();
-        var url = "/search/findMatch/" + first + "/" + last;
+        var phone = patientInfo.phoneNumber.val();
+        var addr = patientInfo.address.val();
+        var age = patientInfo.years.val();
+        var gender = patientInfo.sex.val();
+        var city = patientInfo.city.val();
+        var url = "/search/findMatch/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
         var patientId = $("#patientId").val();
 
+        //DISPLAY STILL QUERIES BY FIRST AND LAST NAME
         $.getJSON(url, function (result) {
             if (result === true) {
                 if(!(patientId > 0)) {
-                    if (confirm("A patient with this name already exists in the database. Would you like to view the matching patient information?")) {
+                    if (confirm("A patient with this information already exists in the database. Would you like to view the matching patients?")) {
                         var duplicatePatientUrl = "/history/patient/" + patientInfo.firstName.val() + "-" + patientInfo.lastName.val();
                         window.location.replace(duplicatePatientUrl);
                     }
