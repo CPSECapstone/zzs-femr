@@ -693,7 +693,7 @@ $(document).ready(function () {
             if (result === true) {
                 if(!(patientId > 0)) {
                     if (confirm("A patient with this information already exists in the database. Would you like to view the matching patients?")) {
-                        var duplicatePatientUrl = "/history/patient/" + patientInfo.firstName.val() + "-" + patientInfo.lastName.val();
+                        var duplicatePatientUrl = "/history/patient/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
                         window.location.replace(duplicatePatientUrl);
                     }
                 }

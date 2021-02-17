@@ -49,6 +49,7 @@ GET         /history/encounter/:id                             @femr.ui.controll
 POST        /history/encounter/updateField/:id                 @femr.ui.controllers.HistoryController.updateEncounterPost(id: Integer)
 GET         /history/encounter/listTabFieldHistory/:id         @femr.ui.controllers.HistoryController.listTabFieldHistoryGet(id: Integer)
 POST        /history/encounter/delete/:id                      @femr.ui.controllers.TriageController.deleteEncounterPost(id: Integer,encounterId: Integer)
+GET         /history/patient/:first/:last/:phone/:addr/:age/:gender/:city @femr.ui.controllers.HistoryController.indexPatientGetWithRankedMatches(first: String, last: String, phone: String, addr: String, age: Long, gender: String, city: String)
 GET         /history/patient/:query                            @femr.ui.controllers.HistoryController.indexPatientGet(query: String)
 #Search
 GET         /search/:page                                      @femr.ui.controllers.SearchController.handleSearch(page: String)
