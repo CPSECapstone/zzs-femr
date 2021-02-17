@@ -108,7 +108,7 @@ public interface ISearchService {
      */
     ServiceResponse<List<PatientItem>> retrievePatientsFromQueryString(String patientSearchQuery);
 
-    ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, Long age, String city);
+    ServiceResponse<List<RankedPatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, Long age, String city);
 
 
     /**

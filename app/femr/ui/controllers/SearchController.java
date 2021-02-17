@@ -13,6 +13,7 @@ import femr.common.dtos.ServiceResponse;
 import femr.common.models.CityItem;
 import femr.common.models.MedicationAdministrationItem;
 import femr.common.models.PatientItem;
+import femr.common.models.RankedPatientItem;
 import femr.data.models.mysql.Roles;
 import femr.ui.helpers.security.AllowedRoles;
 import femr.ui.helpers.security.FEMRAuthenticated;
@@ -105,9 +106,8 @@ public class SearchController extends Controller {
         return ok("true");
     }
 
-    //first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
     public Result doesPatientExistForSearch(String first, String last, String phone, String addr, Long age, String gender, String city){
-        ServiceResponse<List<PatientItem>> patientResponse = searchService.retrievePatientsFromTriageSearch(first, last, phone, addr, gender, age, city);
+        ServiceResponse<List<RankedPatientItem>> patientResponse = searchService.retrievePatientsFromTriageSearch(first, last, phone, addr, gender, age, city);
         if (patientResponse.hasErrors() || patientResponse.getResponseObject().size() == 0) {
             return ok("false");
         }

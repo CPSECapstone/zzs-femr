@@ -582,37 +582,31 @@ public class SearchService implements ISearchService {
     }
 
     //Search for potential matching patients using all triage fields
-    public ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, Long age, String city) {
-        ServiceResponse<List<PatientItem>> response = new ServiceResponse<>();
-
-        List<Patient> patientList = new ArrayList<>();
+    public ServiceResponse<List<RankedPatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, Long age, String city) {
+        ServiceResponse<List<RankedPatientItem>> response = new ServiceResponse<>();
 
         try {
             List<? extends IRankedPatientMatch> rankedPatients = patientRepository.retrievePatientMatchesFromTriageFields(first, last, phone, addr, gender, age, city);
-            for(IRankedPatientMatch p : rankedPatients) {
-                patientList.add(p.getPatient());
-            }
+            List<RankedPatientItem> rankedPatientItems = new ArrayList<>();
 
-            //IGNORE RANK FOR CURRENT DISPLAY
-
-            List<PatientItem> patientItems = new ArrayList<>();
-            for (Patient patient : patientList) {
+            for (IRankedPatientMatch r : rankedPatients) {
                 String pathToPhoto = null;
                 Integer photoId = null;
-                if (patient.getPhoto() != null) {
-                    pathToPhoto = patient.getPhoto().getFilePath();
-                    photoId = patient.getPhoto().getId();
+                if (r.getPatient().getPhoto() != null) {
+                    pathToPhoto = r.getPatient().getPhoto().getFilePath();
+                    photoId = r.getPatient().getPhoto().getId();
                 }
-                patientItems.add(itemModelMapper.createPatientItem(
-                        patient.getId(),
-                        patient.getFirstName(),
-                        patient.getLastName(),
-                        patient.getPhoneNumber(),
-                        patient.getCity(),
-                        patient.getAddress(),
-                        patient.getUserId(),
-                        patient.getAge(),
-                        patient.getSex(),
+
+                PatientItem patientItem = itemModelMapper.createPatientItem(
+                        r.getPatient().getId(),
+                        r.getPatient().getFirstName(),
+                        r.getPatient().getLastName(),
+                        r.getPatient().getPhoneNumber(),
+                        r.getPatient().getCity(),
+                        r.getPatient().getAddress(),
+                        r.getPatient().getUserId(),
+                        r.getPatient().getAge(),
+                        r.getPatient().getSex(),
                         null,
                         null,
                         null,
@@ -625,9 +619,45 @@ public class SearchService implements ISearchService {
                         null,
                         null,
                         null
-                ));
+                );
+                RankedPatientItem rankedPatientItem = new RankedPatientItem(patientItem, r.getRank());
+                rankedPatientItems.add(rankedPatientItem);
             }
-            response.setResponseObject(patientItems);
+            response.setResponseObject(rankedPatientItems);
+
+//            List<PatientItem> patientItems = new ArrayList<>();
+//            for (Patient patient : patientList) {
+//                String pathToPhoto = null;
+//                Integer photoId = null;
+//                if (patient.getPhoto() != null) {
+//                    pathToPhoto = patient.getPhoto().getFilePath();
+//                    photoId = patient.getPhoto().getId();
+//                }
+//                patientItems.add(itemModelMapper.createPatientItem(
+//                        patient.getId(),
+//                        patient.getFirstName(),
+//                        patient.getLastName(),
+//                        patient.getPhoneNumber(),
+//                        patient.getCity(),
+//                        patient.getAddress(),
+//                        patient.getUserId(),
+//                        patient.getAge(),
+//                        patient.getSex(),
+//                        null,
+//                        null,
+//                        null,
+//                        null,
+//                        pathToPhoto,
+//                        photoId,
+//                        null,
+//                        null,
+//                        null,
+//                        null,
+//                        null,
+//                        null
+//                ));
+//            }
+//            response.setResponseObject(patientItems);
         } catch (Exception ex) {
             response.addError("", ex.getMessage());
         }
