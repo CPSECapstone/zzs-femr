@@ -582,7 +582,7 @@ public class SearchService implements ISearchService {
     }
 
     //Search for potential matching patients using all triage fields
-    public ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, int age, String city) {
+    public ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, Long age, String city) {
         ServiceResponse<List<PatientItem>> response = new ServiceResponse<>();
 
         List<Patient> patientList = new ArrayList<>();

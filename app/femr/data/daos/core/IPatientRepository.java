@@ -75,7 +75,7 @@ public interface IPatientRepository {
      **/
     List<? extends IPatient> retrievePatientsByName(String firstName, String lastName);
 
-    List<? extends IRankedPatientMatch> retrievePatientMatchesFromTriageFields(String firstName, String lastName, String phone, String addr, String gender, int age, String city);
+    List<? extends IRankedPatientMatch> retrievePatientMatchesFromTriageFields(String firstName, String lastName, String phone, String addr, String gender, Long age, String city);
 
     /**
      *  Retrieve list of patients with the given first AND last name. Will also

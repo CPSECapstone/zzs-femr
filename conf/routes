@@ -53,7 +53,7 @@ GET         /history/patient/:query                            @femr.ui.controll
 #Search
 GET         /search/:page                                      @femr.ui.controllers.SearchController.handleSearch(page: String)
 GET         /search/check/:query                               @femr.ui.controllers.SearchController.doesPatientExist(query: String)
-GET         /search/findMatch/:first/:last/:phone/:addr/:age/:gender/:city         @femr.ui.controllers.SearchController.doesPatientExistForSearch(first: String, last: String, phone: String, addr: String, age: Integer, gender: String, city: String)
+GET         /search/findMatch/:first/:last/:phone/:addr/:age/:gender/:city         @femr.ui.controllers.SearchController.doesPatientExistForSearch(first: String, last: String, phone: String, addr: String, age: Long, gender: String, city: String)
 GET         /search/typeahead/patients                         @femr.ui.controllers.SearchController.typeaheadPatientsJSONGet()
 # AJ Saclayan!  Adding in typeahead
 GET         /search/typeahead/cities                           @femr.ui.controllers.SearchController.typeaheadCitiesJSONGet()

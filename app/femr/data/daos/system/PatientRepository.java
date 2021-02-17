@@ -12,7 +12,10 @@ import femr.data.models.mysql.PatientAgeClassification;
 import femr.util.stringhelpers.StringUtils;
 import play.Logger;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PatientRepository implements IPatientRepository {
@@ -235,12 +238,15 @@ public class PatientRepository implements IPatientRepository {
      * {@inheritDoc}
      */
     @Override
-    public List<? extends IRankedPatientMatch> retrievePatientMatchesFromTriageFields(String firstName, String lastName, String phone, String addr, String gender, int age, String city) {
+    public List<? extends IRankedPatientMatch> retrievePatientMatchesFromTriageFields(String firstName, String lastName, String phone, String addr, String gender, Long age, String city) {
 
         List<? extends IRankedPatientMatch> response = null;
         try {
 
             Query<? extends IRankedPatientMatch> query = QueryProvider.getRankedPatientMatchQuery();
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String ageString = dateFormat.format(new Date(age));
 
             String sql
                     = "select id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, ("+
@@ -250,7 +256,7 @@ public class PatientRepository implements IPatientRepository {
                     "case when address = \"" + addr +"\" then 15 else 0 end + " +
                     "case when LEFT(first_name, 1)= \"" + firstName.substring(0, 1) +"\" then 10 else 0 end + " +
                     "case when LEFT(last_name, 1)= \"" + lastName.substring(0, 1) +"\" then 10 else 0 end + " +
-                    "case when age != null and age = " + age + " then 10 else 0 end + " +
+                    "case when age != null and age = \"" + ageString + "\" then 10 else 0 end + " +
                     "case when sex = \"" + gender + "\" then 10 else 0 end + " +
                     "case when city like \"" + city + "\" then 10 else 0 end) " +
                     "as priority " +

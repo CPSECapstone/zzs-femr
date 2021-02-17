@@ -681,7 +681,8 @@ $(document).ready(function () {
         var last = patientInfo.lastName.val();
         var phone = patientInfo.phoneNumber.val();
         var addr = patientInfo.address.val();
-        var age = patientInfo.years.val();
+        //age col in patients table stores a bday, using age var to keep consistent naming conventions, passing date as long to router
+        var age = birthdayAgeAutoCalculateFeature.calculateBirthdayFromAge().valueOf();
         var gender = patientInfo.sex.val();
         var city = patientInfo.city.val();
         var url = "/search/findMatch/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;

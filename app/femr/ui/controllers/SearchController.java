@@ -106,7 +106,7 @@ public class SearchController extends Controller {
     }
 
     //first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
-    public Result doesPatientExistForSearch(String first, String last, String phone, String addr, int age, String gender, String city){
+    public Result doesPatientExistForSearch(String first, String last, String phone, String addr, Long age, String gender, String city){
         ServiceResponse<List<PatientItem>> patientResponse = searchService.retrievePatientsFromTriageSearch(first, last, phone, addr, gender, age, city);
         if (patientResponse.hasErrors() || patientResponse.getResponseObject().size() == 0) {
             return ok("false");
