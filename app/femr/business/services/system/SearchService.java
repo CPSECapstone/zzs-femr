@@ -581,23 +581,22 @@ public class SearchService implements ISearchService {
         return response;
     }
 
-    //new search
-    public ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last) {
+    //Search for potential matching patients using all triage fields
+    public ServiceResponse<List<PatientItem>> retrievePatientsFromTriageSearch(String first, String last, String phone, String addr, String gender, Long age, String city) {
         ServiceResponse<List<PatientItem>> response = new ServiceResponse<>();
 
-        String firstName = first;
-        String lastName = last;
-        if (first.length() == 0 || last.length() == 0) {
-            response.addError("", "query strings empty");
-        }
-
-        List<? extends IPatient> patients;
+        List<Patient> patientList = new ArrayList<>();
 
         try {
-        patients = patientRepository.retrievePatientsByName(firstName, lastName);
+            List<? extends IRankedPatientMatch> rankedPatients = patientRepository.retrievePatientMatchesFromTriageFields(first, last, phone, addr, gender, age, city);
+            for(IRankedPatientMatch p : rankedPatients) {
+                patientList.add(p.getPatient());
+            }
+
+            //IGNORE RANK FOR CURRENT DISPLAY
 
             List<PatientItem> patientItems = new ArrayList<>();
-            for (IPatient patient : patients) {
+            for (Patient patient : patientList) {
                 String pathToPhoto = null;
                 Integer photoId = null;
                 if (patient.getPhoto() != null) {
