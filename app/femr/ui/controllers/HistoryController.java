@@ -158,6 +158,7 @@ public class HistoryController extends Controller {
         for (RankedPatientItem r : rankedPatientItems)
             r.getPatientItem().setPathToPhoto(routes.PhotoController.GetPatientPhoto(r.getPatientItem().getId(), true).toString());
         viewModel.setRankedPatientItems(rankedPatientItems);
+        viewModel.setPatientItems(new ArrayList<>());
         viewModel.setPatientItem(rankedPatientItems.get(0).getPatientItem());
 
         ServiceResponse<List<PatientEncounterItem>> patientEncountersServiceResponse = searchService.retrievePatientEncounterItemsByPatientId(rankedPatientItems.get(0).getPatientItem().getId());
