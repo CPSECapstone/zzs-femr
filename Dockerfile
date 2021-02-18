@@ -47,6 +47,10 @@ ENV PATH $PROJECT_WORKPLACE/build/target/universal/stage/bin:$PATH
 COPY . $PROJECT_HOME/app
 WORKDIR $PROJECT_HOME/app
 
+RUN \
+    rm $PROJECT_HOME/app/conf/application.conf && \
+    mv $PROJECT_HOME/app/conf/application.docker.conf $PROJECT_HOME/app/conf/application.conf
+
 RUN sbt clean compile
 
 #open port 9000 for connections
