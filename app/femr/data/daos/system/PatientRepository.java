@@ -251,8 +251,10 @@ public class PatientRepository implements IPatientRepository {
             String sql
                     = "select id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, ("+
                     "case when phone_number = " + phone + " then 40 else 0 end + " +
-                    "case when last_name = \"" + lastName +"\" then 25 else 0 end + " +
-                    "case when first_name = \"" + firstName +"\" then 20 else 0 end + " +
+                    "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
+                    "case when first_name = \"" + firstName +"\" then 10 else 0 end + " +
+                    "case when dm(last_name) = dm(\"" + lastName +"\") then 10 else 0 end + " +
+                    "case when dm(first_name) = dm(\"" + firstName +"\") then 10 else 0 end + " +
                     "case when address = \"" + addr +"\" then 15 else 0 end + " +
                     "case when LEFT(first_name, 1)= \"" + firstName.substring(0, 1) +"\" then 10 else 0 end + " +
                     "case when LEFT(last_name, 1)= \"" + lastName.substring(0, 1) +"\" then 10 else 0 end + " +
