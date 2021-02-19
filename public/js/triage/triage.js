@@ -692,7 +692,7 @@ $(document).ready(function () {
         $.getJSON(url, function (result) {
             if (result === true) {
                 if(!(patientId > 0)) {
-                    if (confirm("A patient with this information already exists in the database. Would you like to view the matching patients?")) {
+                    if (confirm("A patient with similar information already exists in the database. Would you like to view the matching patients?")) {
                         var duplicatePatientUrl = "/history/patient/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
                         window.location.replace(duplicatePatientUrl);
                     }

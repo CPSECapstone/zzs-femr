@@ -253,8 +253,8 @@ public class PatientRepository implements IPatientRepository {
                     "case when phone_number = " + phone + " then 40 else 0 end + " +
                     "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
                     "case when first_name = \"" + firstName +"\" then 10 else 0 end + " +
-                    "case when dm(last_name) = dm(\"" + lastName +"\") then 10 else 0 end + " +
-                    "case when dm(first_name) = dm(\"" + firstName +"\") then 10 else 0 end + " +
+                    "case when fuzzy_last_name = dm(\"" + lastName +"\") then 10 else 0 end + " +
+                    "case when fuzzy_first_name = dm(\"" + firstName +"\") then 10 else 0 end + " +
                     "case when address = \"" + addr +"\" then 15 else 0 end + " +
                     "case when LEFT(first_name, 1)= \"" + firstName.substring(0, 1) +"\" then 10 else 0 end + " +
                     "case when LEFT(last_name, 1)= \"" + lastName.substring(0, 1) +"\" then 10 else 0 end + " +
