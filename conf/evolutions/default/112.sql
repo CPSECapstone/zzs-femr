@@ -1,33 +1,33 @@
 # --- !Ups
 
-CREATE TRIGGER insertFuzzyFirst
-before INSERT
+CREATE TRIGGER insertDmFirst
+BEFORE INSERT
 ON patients
 FOR EACH ROW
-SET new.fuzzy_first_name = dm(new.first_name);
+SET new.dm_first_name = dm(new.first_name);
 
-CREATE TRIGGER updateFuzzyFirst
-before UPDATE
+CREATE TRIGGER updateDmFirst
+BEFORE UPDATE
 ON patients
 FOR EACH ROW
-SET new.fuzzy_first_name = dm(new.first_name);
+SET new.dm_first_name = dm(new.first_name);
 
-CREATE TRIGGER insertFuzzyLast
-before INSERT
+CREATE TRIGGER insertDmLast
+BEFORE INSERT
 ON patients
 FOR EACH ROW
-SET new.fuzzy_last_name = dm(new.last_name);
+SET new.dm_last_name = dm(new.last_name);
 
-CREATE TRIGGER updateFuzzyLast
-before UPDATE
+CREATE TRIGGER updateDmLast
+BEFORE UPDATE
 ON patients
 FOR EACH ROW
-SET new.fuzzy_last_name = dm(new.last_name);
+SET new.dm_last_name = dm(new.last_name);
 
 
 # --- !Downs
 
-DROP TRIGGER insertFuzzyFirst;
-DROP TRIGGER updateFuzzyFirst;
-DROP TRIGGER insertFuzzyLast;
-DROP TRIGGER updateFuzzyLast;
+DROP TRIGGER insertDmFirst;
+DROP TRIGGER updateDmFirst;
+DROP TRIGGER insertDmLast;
+DROP TRIGGER updateDmLast;
