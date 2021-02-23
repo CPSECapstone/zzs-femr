@@ -36,6 +36,9 @@
     float: left;
     width: 60%;
     padding: 5px;
+    position: absolute;
+    height: 100%;
+    display: inline-block;
 }
 
 #leftVitalsWrap {
@@ -126,6 +129,11 @@
 
 .generalInfoInput {
     padding: 5px;
+    overflow: hidden;
+}
+
+.triage-form {
+    position: relative;
     overflow: hidden;
 }
 
@@ -299,6 +307,8 @@
     }
     #vitalsWrap {
         width: 100%;
+        position: static;
+        display: block;
     }
 
     #genInfoWrap {
@@ -312,6 +322,11 @@
 
     #weeksPregnant {
         margin: 0;
+    }
+
+    .triage-form {
+        position: static;
+        overflow: initial;
     }
 }
 
