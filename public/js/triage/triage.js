@@ -685,11 +685,24 @@ $(document).ready(function () {
         var age = birthdayAgeAutoCalculateFeature.calculateBirthdayFromAge().valueOf();
         var gender = patientInfo.sex.val();
         var city = patientInfo.city.val();
-        var url = "/search/findMatch/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
+        // var url = "/search/findMatch/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
+        // var url = "/search/findMatch" + "?first=" + encodeURIComponent(first) + "&last=" + encodeURIComponent(last) + "&gender=" + encodeURIComponent(gender) + "&city=" + encodeURIComponent(city);
+        var url = "/search/findMatch";
         var patientId = $("#patientId").val();
 
-        //DISPLAY STILL QUERIES BY FIRST AND LAST NAME
-        $.getJSON(url, function (result) {
+        // var queryString = Object.keys(params).map((key) => {
+        //     return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+        // }).join('&');
+
+        $.getJSON(url, {
+            first: first,
+            last: last,
+            phone: phone,
+            addr: addr,
+            age: age,
+            gender: gender,
+            city: city
+        },function (result) {
             if (result === true) {
                 if(!(patientId > 0)) {
                     if (confirm("A patient with similar information already exists in the database. Would you like to view the matching patients?")) {
