@@ -701,7 +701,8 @@ $(document).ready(function () {
             if (result === true) {
                 if(!(patientId > 0)) {
                     if (confirm("A patient with similar information already exists in the database. Would you like to view the matching patients?")) {
-                        var duplicatePatientUrl = "/history/patient/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
+                        var duplicatePatientUrl = "/history/patient/withMatches/p?first=" + first + "&last=" + last
+                        + "&phone=" + phone + "&addr=" + addr + "&age=" + age + "&gender=" + gender + "&city=" + city;
                         window.location.replace(duplicatePatientUrl);
                     }
                 }
