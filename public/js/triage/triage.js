@@ -685,16 +685,47 @@ $(document).ready(function () {
         var age = birthdayAgeAutoCalculateFeature.calculateBirthdayFromAge().valueOf();
         var gender = patientInfo.sex.val();
         var city = patientInfo.city.val();
-        var url = "/search/findMatch/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
+        var ageClassification = $("[name=ageClassification]:checked").val();
+
+        var url = "/search/dupPatient/findMatch";
         var patientId = $("#patientId").val();
 
-        //DISPLAY STILL QUERIES BY FIRST AND LAST NAME
-        $.getJSON(url, function (result) {
+        var queryParams;
+        if(ageClassification != null) {
+            queryParams = {
+                first: first,
+                last: last,
+                phone: phone,
+                addr: addr,
+                gender: gender,
+                city: city
+            }
+        } else {
+            queryParams = {
+                first: first,
+                last: last,
+                phone: phone,
+                addr: addr,
+                age: age,
+                gender: gender,
+                city: city
+            }
+        }
+
+
+        $.getJSON(url, queryParams,function (result) {
             if (result === true) {
                 if(!(patientId > 0)) {
                     if (confirm("A patient with similar information already exists in the database. Would you like to view the matching patients?")) {
-                        var duplicatePatientUrl = "/history/patient/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
-                        window.location.replace(duplicatePatientUrl);
+                        var patientMatchesUrl;
+                        if(ageClassification != null) {
+                            patientMatchesUrl = "/history/patient/withMatches/p?first=" + first + "&last=" + last
+                                + "&phone=" + phone + "&addr=" + addr + "&gender=" + gender + "&city=" + city;
+                        } else {
+                            patientMatchesUrl = "/history/patient/withMatches/p?first=" + first + "&last=" + last
+                                + "&phone=" + phone + "&addr=" + addr + "&age=" + age + "&gender=" + gender + "&city=" + city;
+                        }
+                        window.location.replace(patientMatchesUrl);
                     }
                 }
             }
