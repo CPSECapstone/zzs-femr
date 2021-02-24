@@ -685,14 +685,9 @@ $(document).ready(function () {
         var age = birthdayAgeAutoCalculateFeature.calculateBirthdayFromAge().valueOf();
         var gender = patientInfo.sex.val();
         var city = patientInfo.city.val();
-        // var url = "/search/findMatch/" + first + "/" + last + "/" + phone + "/" + addr + "/" + age + "/" + gender + "/" + city;
-        // var url = "/search/findMatch" + "?first=" + encodeURIComponent(first) + "&last=" + encodeURIComponent(last) + "&gender=" + encodeURIComponent(gender) + "&city=" + encodeURIComponent(city);
-        var url = "/search/findMatch";
-        var patientId = $("#patientId").val();
 
-        // var queryString = Object.keys(params).map((key) => {
-        //     return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-        // }).join('&');
+        var url = "/search/dupPatient/findMatch";
+        var patientId = $("#patientId").val();
 
         $.getJSON(url, {
             first: first,
