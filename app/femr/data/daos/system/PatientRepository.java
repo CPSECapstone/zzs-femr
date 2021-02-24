@@ -253,22 +253,15 @@ public class PatientRepository implements IPatientRepository {
 
 
             String sql
-                    = "select id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (";
-            if(phone != null && !phone.equals("")) {
-                sql += "case when phone_number = " + phone + " then 40 else 0 end + ";
-            }
-            sql += "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
+                    = "select id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (" +
+                    (phone != null && !phone.equals("") ? "case when phone_number = " + phone + " then 40 else 0 end + ": "") +
+                    "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
                     "case when first_name = \"" + firstName +"\" then 10 else 0 end + " +
                     "case when dm_last_name = dm(\"" + lastName +"\") then 10 else 0 end + " +
-                    "case when dm_first_name = dm(\"" + firstName +"\") then 10 else 0 end + ";
-            if(addr != null && !addr.equals("")) {
-                sql += "case when address = \"" + addr +"\" then 15 else 0 end + ";
-            }
-            if(age != null) {
-                sql += "case when age != null and age = \"" + ageString + "\" then 10 else 0 end + ";
-            }
-
-            sql += "case when sex = \"" + gender + "\" then 10 else 0 end + " +
+                    "case when dm_first_name = dm(\"" + firstName +"\") then 10 else 0 end + " +
+                    (addr != null && !addr.equals("") ? "case when address = \"" + addr +"\" then 15 else 0 end + ": "") +
+                    (age != null ? "case when age != null and age = \"" + ageString + "\" then 10 else 0 end + ": "") +
+                    "case when sex = \"" + gender + "\" then 10 else 0 end + " +
                     "case when city like \"" + city + "\" then 10 else 0 end) " +
                     "as priority " +
                     "from patients having priority >= 30 and isDeleted is null order by priority desc limit 15";

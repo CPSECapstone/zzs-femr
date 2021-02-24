@@ -685,12 +685,13 @@ $(document).ready(function () {
         var age = birthdayAgeAutoCalculateFeature.calculateBirthdayFromAge().valueOf();
         var gender = patientInfo.sex.val();
         var city = patientInfo.city.val();
+        var ageClassification = $("[name=ageClassification]:checked").val();
 
         var url = "/search/dupPatient/findMatch";
         var patientId = $("#patientId").val();
 
         var queryParams;
-        if(patientInfo.ageClassification != null) {
+        if(ageClassification != null) {
             queryParams = {
                 first: first,
                 last: last,
@@ -717,7 +718,7 @@ $(document).ready(function () {
                 if(!(patientId > 0)) {
                     if (confirm("A patient with similar information already exists in the database. Would you like to view the matching patients?")) {
                         var patientMatchesUrl;
-                        if(patientInfo.ageClassification != null) {
+                        if(ageClassification != null) {
                             patientMatchesUrl = "/history/patient/withMatches/p?first=" + first + "&last=" + last
                                 + "&phone=" + phone + "&addr=" + addr + "&gender=" + gender + "&city=" + city;
                         } else {
