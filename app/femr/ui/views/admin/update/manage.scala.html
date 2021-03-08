@@ -1,0 +1,99 @@
+@(currentUser: femr.common.dtos.CurrentUser,
+        viewModel: femr.ui.models.admin.configure.IndexViewModelGet,
+        assets: AssetsFinder)
+
+@import femr.ui.controllers.admin.routes.ConfigureController
+@import femr.ui.views.html.layouts.admin
+
+    @additionalStyles = {
+        <link rel="stylesheet" href="@assets.path("css/admin/configure.css")">
+    }
+
+@admin("Update Panel", currentUser, styles = additionalStyles, assets = assets) {
+    @helper.form(action = ConfigureController.managePost()) {
+
+        <div style="float:right">
+            <h2>Database Status</h2>
+
+            <table>
+                <tr>
+                    <td>Last Backup:</td>
+                    <td>FRI 01.01.2020</td>
+                </tr>
+                <tr>
+                    <td>Create Backup:</td>
+                    <td><input type="submit" class="fButton" value="Back Up Now"/></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div>
+        <h2>Network Status</h2>
+
+        <table>
+            <tr>
+                <td>Status:</td>
+                <td>Connection Stable</td>
+            </tr>
+            <tr>
+                <td>Download:</td>
+                <td>10 Mbps</td>
+            </tr>
+            <tr>
+                <td>Upload:</td>
+                <td>1 Mbps</td>
+            </tr>
+            <tr>
+                <td>Ping:</td>
+                <td>76 ms</td>
+            </tr>
+            <tr>
+                <td>Last Available: </td>
+                <td>FRI 02.17.2020</td>
+            </tr>
+        </table>
+        </div>
+
+        <div style="float:right">
+            <h2>Available Updates</h2>
+
+            <table>
+                <tr>
+                    <td>Kit Update: Available</td>
+                    <td><input type="submit" class="fButton" value="Update"/></td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div>
+        <h2>fEMR Kit Status</h2>
+
+        <table>
+            <tr>
+                <td>Status:</td>
+                <td>Currently Online</td>
+            </tr>
+            <tr>
+                <td>Version:</td>
+                <td>1.0.0</td>
+            </tr>
+            <tr>
+                <td>Last Update:</td>
+                <td>FRI 01.01.2020</td>
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td>Docker Container</td>
+            </tr>
+        </table>
+        </div>
+
+
+        
+
+    }
+
+}
