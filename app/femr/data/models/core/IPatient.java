@@ -19,6 +19,7 @@
 package femr.data.models.core;
 
 import femr.data.models.mysql.PatientEncounter;
+import femr.data.models.mysql.keys.PatientKey;
 import org.joda.time.DateTime;
 
 import java.util.Date;
@@ -27,6 +28,10 @@ import java.util.List;
 public interface IPatient {
 
     int getId();
+
+    void setPatientKey();
+
+    PatientKey getPatientKey();
 
     int getUserId();
 
@@ -73,7 +78,7 @@ public interface IPatient {
     DateTime getIsDeleted();
 
     void setIsDeleted(DateTime isDeleted);
-    
+
     Integer getDeletedByUserId() ;
 
     void setDeletedByUserId(Integer userId) ;
@@ -82,5 +87,5 @@ public interface IPatient {
 
     void setReasonDeleted(String reason) ;
 
-    
+
 }

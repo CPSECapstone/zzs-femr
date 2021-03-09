@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientRepository implements IPatientRepository {
 
@@ -253,7 +254,7 @@ public class PatientRepository implements IPatientRepository {
 
 
             String sql
-                    = "select id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (" +
+                    = "select id, kit_id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (" +
                     (phone != null && !phone.equals("") ? "case when phone_number = " + phone + " then 40 else 0 end + ": "") +
                     "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
                     "case when first_name = \"" + firstName +"\" then 10 else 0 end + " +
@@ -268,7 +269,8 @@ public class PatientRepository implements IPatientRepository {
 
             RawSql rawSql = RawSqlBuilder
                     .parse(sql)
-                    .columnMapping("id", "patient.id")
+                    .columnMapping("id", "patient_id")
+                    .columnMapping("kit_id", "kit_id")
                     .columnMapping("user_id", "patient.userId")
                     .columnMapping("first_name", "patient.firstName")
                     .columnMapping("last_name", "patient.lastName")
@@ -351,16 +353,36 @@ public class PatientRepository implements IPatientRepository {
     @Override
     public IPatient savePatient(IPatient patient) {
 
-        IPatient response = null;
-        try {
+        Optional<Patient> maxIdPatient;
+        Boolean savedSafely = false;
+        while (!(savedSafely)) {
+            try {
+                maxIdPatient = QueryProvider.getPatientQuery()
+                        .where().eq("kit_id", patient.getPatientKey().getKitId())
+                        .orderBy("id DESC")
+                        .setMaxRows(1)
+                        .findOneOrEmpty();
 
-            Ebean.save(patient);
-        } catch (Exception ex) {
+                if (maxIdPatient.isPresent()) {
+                    patient.setId(maxIdPatient.get().getId() + 1);
+                } else {
+                    patient.setId(1);
+                }
+                Ebean.save(patient);
+                savedSafely = true;
+            } catch (io.ebean.DuplicateKeyException ex) {
+                // id must have just been taken, try again
+                System.out.println("duplicate key exception, try to get a valid id again");
+            }
+            catch (Exception ex) {
 
-            //is it necessary to pass all details about object in log?
-            Logger.error("PatientRepository-savePatient", ex.getMessage());
-            throw ex;
+                //is it necessary to pass all details about object in log?
+                Logger.error("PatientRepository-savePatient", ex.getMessage());
+                throw ex;
+            }
         }
+
+        //io.ebean.DuplicateKeyException
 
         return patient;
     }

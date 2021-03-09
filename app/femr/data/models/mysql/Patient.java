@@ -20,8 +20,8 @@ package femr.data.models.mysql;
 
 import femr.data.models.core.IPatient;
 import femr.data.models.core.IPhoto;
+import femr.data.models.mysql.keys.PatientKey;
 import org.joda.time.DateTime;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -29,9 +29,9 @@ import java.util.List;
 @Entity
 @Table(name = "patients")
 public class Patient implements IPatient {
-    @Id
-    @Column(name = "id", unique = true, nullable = false)
-    private int id;
+
+    @EmbeddedId
+    private PatientKey patientKey;
     @Column(name = "user_id", unique = false, nullable = false)
     private int userId;
     @Column(name = "first_name", nullable = false)
@@ -63,7 +63,18 @@ public class Patient implements IPatient {
 
     @Override
     public int getId() {
-        return id;
+        return patientKey.getPatientId();
+    }
+
+    @Override
+    public void setPatientKey(){
+        this.patientKey = new PatientKey(0, 1);
+    }
+
+    @Override
+    public PatientKey getPatientKey()
+    {
+        return this.patientKey;
     }
 
     @Override
@@ -148,7 +159,7 @@ public class Patient implements IPatient {
 
     @Override
     public void setId(int id) {
-        this.id = id;
+        patientKey.setPatientId(id);
     }
 
     @Override
