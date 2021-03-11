@@ -31,7 +31,7 @@ Prerequisites: Have MySQL, MySQLWorkbench, and IntelliJ IDEA Ultimate installed 
 #### 5. Click the sbt refresh button.
 #### 6. Run the configuration on IntelliJ.
 
-###Deploying with Docker
+### Deploying with Docker
 
 #### 1. pull the latest version of the docker-compose.yml file
 #### 2. run 'docker-compose up' to start the fEMR and mySQL instance
