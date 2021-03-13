@@ -269,8 +269,8 @@ public class PatientRepository implements IPatientRepository {
 
             RawSql rawSql = RawSqlBuilder
                     .parse(sql)
-                    .columnMapping("id", "patient_id")
-                    .columnMapping("kit_id", "kit_id")
+                    .columnMapping("id", "patient.patient_id")
+                    .columnMapping("kit_id", "patient.kit_id")
                     .columnMapping("user_id", "patient.userId")
                     .columnMapping("first_name", "patient.firstName")
                     .columnMapping("last_name", "patient.lastName")
@@ -353,26 +353,15 @@ public class PatientRepository implements IPatientRepository {
     @Override
     public IPatient savePatient(IPatient patient) {
 
-        Optional<Patient> maxIdPatient;
         Boolean savedSafely = false;
         while (!(savedSafely)) {
             try {
-                maxIdPatient = QueryProvider.getPatientQuery()
-                        .where().eq("kit_id", patient.getPatientKey().getKitId())
-                        .orderBy("id DESC")
-                        .setMaxRows(1)
-                        .findOneOrEmpty();
-
-                if (maxIdPatient.isPresent()) {
-                    patient.setId(maxIdPatient.get().getId() + 1);
-                } else {
-                    patient.setId(1);
-                }
+                patient.setId(getHighestIdPossible(patient));
                 Ebean.save(patient);
                 savedSafely = true;
             } catch (io.ebean.DuplicateKeyException ex) {
                 // id must have just been taken, try again
-                System.out.println("duplicate key exception, try to get a valid id again");
+                Logger.error("duplicate key exception, try to get a valid id again", ex.getMessage());
             }
             catch (Exception ex) {
 
@@ -382,8 +371,39 @@ public class PatientRepository implements IPatientRepository {
             }
         }
 
-        //io.ebean.DuplicateKeyException
-
         return patient;
+    }
+
+    /**
+     * getHighsetIdPossible
+     *
+     * gets the highest patient id possible for the new patient being saved for that kit
+     * @param patient patient being saved
+     * @return int the highest possible patient id value
+     */
+    private int getHighestIdPossible(IPatient patient) {
+        Optional<Patient> highestIdPatient = getHighestIdPatient(patient);
+
+        if (highestIdPatient.isPresent()) {
+            return (highestIdPatient.get().getId() + 1);
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * getHighestIdPatient
+     *
+     * is a helper function that gets a patient from the patients table
+     * which has the highest id for that patient's kit (id)
+     * @param patient which has the kit id for which to search for the highest patient id
+     * @return the optional patient returned is just to get back the id value
+     */
+    private Optional<Patient> getHighestIdPatient(IPatient patient) {
+        return QueryProvider.getPatientQuery()
+                .where().eq("kit_id", patient.getPatientKey().getKitId())
+                .orderBy("id DESC")
+                .setMaxRows(1)
+                .findOneOrEmpty();
     }
 }

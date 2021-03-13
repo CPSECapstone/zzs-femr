@@ -31,6 +31,10 @@ public interface IPatient {
 
     void setPatientKey();
 
+    int getKitId();
+
+    void setKitId(int kitId);
+
     PatientKey getPatientKey();
 
     int getUserId();

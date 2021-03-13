@@ -67,6 +67,16 @@ public class Patient implements IPatient {
     }
 
     @Override
+    public int getKitId() {
+        return patientKey.getKitId();
+    }
+
+    @Override
+    public void setKitId(int kitId) {
+        this.patientKey.setKitId(kitId);
+    }
+
+    @Override
     public void setPatientKey(){
         this.patientKey = new PatientKey(0, 1);
     }

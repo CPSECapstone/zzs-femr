@@ -17,8 +17,6 @@ public class PatientKey implements Serializable {
         this.kitId = kitId;
     }
 
-    public PatientKey() {}
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,7 +34,9 @@ public class PatientKey implements Serializable {
     /**
      * Getter for patient id.
      *
-     * @return int patient id is the number patients are assigned for identification
+     * @return int patient id is a non-unique number patients are assigned by the kit
+     *             A compound key of (patient id, kit id) is a globally unique identifier for
+     *             a patient
      */
     public int getPatientId() {
         return patientId;
@@ -45,7 +45,9 @@ public class PatientKey implements Serializable {
     /**
      * Setter for patient id.
      *
-     * @param id int patient id is the number patients are assigned for identification
+     * @param id int patient id is a non-unique number patients are assigned by the kit
+     *      *             A compound key of (patient id, kit id) is a globally unique identifier for
+     *      *             a patient
      */
     public void setPatientId(int id) {
         patientId = id;
