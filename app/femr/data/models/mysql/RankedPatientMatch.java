@@ -7,11 +7,12 @@ import javax.persistence.*;
 @Sql
 public class RankedPatientMatch implements IRankedPatientMatch {
 
-//    @OneToOne (fetch = FetchType.EAGER)
-    @JoinColumns({
-            @JoinColumn(name = "patient_id", nullable = false, referencedColumnName = "id"),
-            @JoinColumn(name = "kit_id", nullable = false, referencedColumnName = "kit_id")
-    })
+    // doesn't crash when one to many for some reason
+    @OneToMany (fetch = FetchType.EAGER)
+//    @JoinColumns({
+//            @JoinColumn(name = "patient_id", nullable = false, referencedColumnName = "id"),
+//            @JoinColumn(name = "kit_id", nullable = false, referencedColumnName = "kit_id")
+//    })
     Patient patient;
     Integer rank;
 
