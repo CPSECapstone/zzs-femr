@@ -269,8 +269,8 @@ public class PatientRepository implements IPatientRepository {
 
             RawSql rawSql = RawSqlBuilder
                     .parse(sql)
-                    .columnMapping("id", "patient.patientKey.patientId")
-                    .columnMapping("kit_id", "patient.patientKey.kitId")
+//                    .columnMapping("id", "patient.patientKey.patientId")
+//                    .columnMapping("kit_id", "patient.patientKey.kitId")
                     .columnMapping("user_id", "patient.userId")
                     .columnMapping("first_name", "patient.firstName")
                     .columnMapping("last_name", "patient.lastName")
