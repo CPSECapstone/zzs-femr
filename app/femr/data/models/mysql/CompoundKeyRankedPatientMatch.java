@@ -14,8 +14,6 @@ import java.util.List;
 @Sql
 public class CompoundKeyRankedPatientMatch implements ICompoundKeyRankedPatientMatch {
 
-    @OneToMany //(fetch = FetchType.EAGER)
-
 //    private PatientKey patientKey;
 
     private int patientId;
