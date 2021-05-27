@@ -334,6 +334,8 @@ public class DataModelMapper implements IDataModelMapper{
 
         IPatient patient = patientProvider.get();
 
+        patient.setPatientKey(null);
+
         patient.setUserId(userID);
         patient.setFirstName(firstName);
         patient.setLastName(lastName);

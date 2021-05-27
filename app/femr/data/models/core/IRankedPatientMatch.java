@@ -10,4 +10,5 @@ public interface IRankedPatientMatch {
     void setPatient(Patient patient);
 
     void setRank(int rank);
+
 }

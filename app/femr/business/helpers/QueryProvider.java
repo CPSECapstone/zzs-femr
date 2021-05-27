@@ -86,6 +86,10 @@ public class QueryProvider {
         return Ebean.find(RankedPatientMatch.class);
     }
 
+    public static Query<CompoundKeyRankedPatientMatch> getCompoundKeyRankedPatientMatchQuery() {
+        return Ebean.find(CompoundKeyRankedPatientMatch.class);
+    }
+
     public static Query<PatientAgeClassification> getPatientAgeClassificationQuery() {
         return Ebean.find(PatientAgeClassification.class);
     }

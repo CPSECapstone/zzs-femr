@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientRepository implements IPatientRepository {
 
@@ -238,6 +239,69 @@ public class PatientRepository implements IPatientRepository {
      * {@inheritDoc}
      */
     @Override
+    public List<? extends ICompoundKeyRankedPatientMatch> retrieveCompoundPatientMatchesFromTriageFields(String firstName, String lastName, String phone, String addr, String gender, Long age, String city) {
+
+        List<? extends ICompoundKeyRankedPatientMatch> response = null;
+        try {
+
+            Query<? extends ICompoundKeyRankedPatientMatch> query = QueryProvider.getCompoundKeyRankedPatientMatchQuery();
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String ageString = "";
+            if(age != null) {
+                ageString = dateFormat.format(new Date(age));
+            }
+
+
+            String sql
+                    = "select id, kit_id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (" +
+                    (phone != null && !phone.equals("") ? "case when phone_number = " + phone + " then 40 else 0 end + ": "") +
+                    "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
+                    "case when first_name = \"" + firstName +"\" then 10 else 0 end + " +
+                    "case when dm_last_name = dm(\"" + lastName +"\") then 10 else 0 end + " +
+                    "case when dm_first_name = dm(\"" + firstName +"\") then 10 else 0 end + " +
+                    (addr != null && !addr.equals("") ? "case when address = \"" + addr +"\" then 15 else 0 end + ": "") +
+                    (age != null ? "case when age != null and age = \"" + ageString + "\" then 10 else 0 end + ": "") +
+                    "case when sex = \"" + gender + "\" then 10 else 0 end + " +
+                    "case when city like \"" + city + "\" then 10 else 0 end) " +
+                    "as priority " +
+                    "from patients having priority >= 30 and isDeleted is null order by priority desc limit 15";
+
+            RawSql rawSql = RawSqlBuilder
+                    .parse(sql)
+                    .columnMapping("id", "patientId")
+                    .columnMapping("kit_id", "kitId")
+                    .columnMapping("user_id", "userId")
+                    .columnMapping("first_name", "firstName")
+                    .columnMapping("last_name", "lastName")
+                    .columnMapping("phone_number", "phoneNumber")
+                    .columnMapping("age", "age")
+                    .columnMapping("sex", "sex")
+                    .columnMapping("address", "address")
+                    .columnMapping("city", "city")
+                    .columnMapping("isDeleted", "isDeleted")
+                    .columnMapping("deleted_by_user_id", "deletedByUserId")
+                    .columnMapping("reason_deleted", "reasonDeleted")
+                    .columnMapping("priority", "rank")
+                    .create();
+
+            query.setRawSql(rawSql);
+
+            response = query.findList();
+
+        } catch (Exception ex) {
+
+            Logger.error("PatientRepository-retrieveCompoundPatientMatchesFromTriageFields", ex.getMessage());
+            throw ex;
+        }
+
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<? extends IRankedPatientMatch> retrievePatientMatchesFromTriageFields(String firstName, String lastName, String phone, String addr, String gender, Long age, String city) {
 
         List<? extends IRankedPatientMatch> response = null;
@@ -253,7 +317,7 @@ public class PatientRepository implements IPatientRepository {
 
 
             String sql
-                    = "select id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (" +
+                    = "select id, kit_id, user_id, first_name, last_name, phone_number, age, sex, address, city, isDeleted, deleted_by_user_id, reason_deleted, (" +
                     (phone != null && !phone.equals("") ? "case when phone_number = " + phone + " then 40 else 0 end + ": "") +
                     "case when last_name = \"" + lastName +"\" then 15 else 0 end + " +
                     "case when first_name = \"" + firstName +"\" then 10 else 0 end + " +
@@ -268,7 +332,8 @@ public class PatientRepository implements IPatientRepository {
 
             RawSql rawSql = RawSqlBuilder
                     .parse(sql)
-                    .columnMapping("id", "patient.id")
+                    .columnMapping("id", "patient.patientKey.patientId")
+                    .columnMapping("kit_id", "patient.patientKey.kitId")
                     .columnMapping("user_id", "patient.userId")
                     .columnMapping("first_name", "patient.firstName")
                     .columnMapping("last_name", "patient.lastName")
@@ -351,17 +416,57 @@ public class PatientRepository implements IPatientRepository {
     @Override
     public IPatient savePatient(IPatient patient) {
 
-        IPatient response = null;
-        try {
+        Boolean savedSafely = false;
+        while (!(savedSafely)) {
+            try {
+                patient.setId(getHighestIdPossible(patient));
+                Ebean.save(patient);
+                savedSafely = true;
+            } catch (io.ebean.DuplicateKeyException ex) {
+                // id must have just been taken, try again
+                Logger.error("duplicate key exception, try to get a valid id again", ex.getMessage());
+            }
+            catch (Exception ex) {
 
-            Ebean.save(patient);
-        } catch (Exception ex) {
-
-            //is it necessary to pass all details about object in log?
-            Logger.error("PatientRepository-savePatient", ex.getMessage());
-            throw ex;
+                //is it necessary to pass all details about object in log?
+                Logger.error("PatientRepository-savePatient", ex.getMessage());
+                throw ex;
+            }
         }
 
         return patient;
+    }
+
+    /**
+     * getHighsetIdPossible
+     *
+     * gets the highest patient id possible for the new patient being saved for that kit
+     * @param patient patient being saved
+     * @return int the highest possible patient id value
+     */
+    private int getHighestIdPossible(IPatient patient) {
+        Optional<Patient> highestIdPatient = getHighestIdPatient(patient);
+
+        if (highestIdPatient.isPresent()) {
+            return (highestIdPatient.get().getId() + 1);
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * getHighestIdPatient
+     *
+     * is a helper function that gets a patient from the patients table
+     * which has the highest id for that patient's kit (id)
+     * @param patient which has the kit id for which to search for the highest patient id
+     * @return the optional patient returned is just to get back the id value
+     */
+    private Optional<Patient> getHighestIdPatient(IPatient patient) {
+        return QueryProvider.getPatientQuery()
+                .where().eq("kit_id", patient.getPatientKey().getKitId())
+                .orderBy("id DESC")
+                .setMaxRows(1)
+                .findOneOrEmpty();
     }
 }
